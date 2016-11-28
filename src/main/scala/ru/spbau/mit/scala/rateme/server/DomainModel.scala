@@ -21,7 +21,8 @@ object DomainModel {
   final case class RegisterResponse(success: Boolean)
 
   /* contracts*/
-  def register(login: String, password: String): RegisterResponse = {
+  def register(request: SignRequest): RegisterResponse = {
+    val (login, password) = request
     if (users.contains(login)) {
       return RegisterResponse(false)
     }
@@ -30,7 +31,8 @@ object DomainModel {
     RegisterResponse(true)
   }
 
-  def login(login: String, password: String): LoginResponse = {
+  def login(request: SignRequest): LoginResponse = {
+    val (login, password) = request
     if (!users.contains(login)) {
       return LoginResponse(success = false)
     }

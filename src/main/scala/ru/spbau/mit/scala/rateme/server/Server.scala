@@ -25,6 +25,8 @@ object Server extends App {
   implicit val executionContext = system.dispatcher
 
   implicit val signFormat = jsonFormat2(DomainModel.SignRequest)
+  implicit val loginResponseFormat = jsonFormat3(DomainModel.LoginResponse)
+  implicit val registerResponseFormat = jsonFormat1(DomainModel.RegisterResponse)
 
   println(s"Starting server on ${Config.PORT}")
 
@@ -44,14 +46,14 @@ object Server extends App {
         path("register") {
           entity(as[DomainModel.SignRequest]) { request =>
             println(s"Register request: $request")
-            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+            complete(DomainModel.register(request))
           }
         } ~
           path("login") {
-            //            entity(as[DomainModel.SignRequest]) { request =>
-            //              println(s"Register request: $request")
-            //            }
-            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+            entity(as[DomainModel.SignRequest]) { request =>
+              println(s"Login request: $request")
+              complete(DomainModel.login(request))
+            }
           }
       }
 
