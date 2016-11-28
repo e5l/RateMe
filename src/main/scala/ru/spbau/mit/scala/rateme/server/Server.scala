@@ -10,6 +10,7 @@ import akka.http.scaladsl.server.Route
 import akka.Done
 import spray.json.DefaultJsonProtocol._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
 import scala.io.StdIn
 
@@ -24,9 +25,9 @@ object Server extends App {
   implicit val materalizer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  implicit val signFormat = jsonFormat2(DomainModel.SignRequest)
-  implicit val loginResponseFormat = jsonFormat3(DomainModel.LoginResponse)
-  implicit val registerResponseFormat = jsonFormat1(DomainModel.RegisterResponse)
+  implicit val signFormat: RootJsonFormat[SignRequest] = jsonFormat2(SignRequest)
+  //    implicit val loginResponseFormat: RootJsonFormat[LoginResponse] = jsonFormat3(LoginResponse)
+  implicit val registerResponseFormat: RootJsonFormat[RegisterResponse] = jsonFormat1(RegisterResponse)
 
   println(s"Starting server on ${Config.PORT}")
 
@@ -44,15 +45,17 @@ object Server extends App {
     } ~
       post {
         path("register") {
-          entity(as[DomainModel.SignRequest]) { request =>
+          entity(as[SignRequest]) { request =>
             println(s"Register request: $request")
-            complete(DomainModel.register(request))
+            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+            //            complete(DomainModel.register(request))
           }
         } ~
           path("login") {
-            entity(as[DomainModel.SignRequest]) { request =>
+            entity(as[SignRequest]) { request =>
               println(s"Login request: $request")
-              complete(DomainModel.login(request))
+              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+              //              complete(DomainModel.login(request))
             }
           }
       }
