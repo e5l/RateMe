@@ -4,29 +4,24 @@ import scala.collection.mutable
 
 object DomainModel {
 
-  type Name = String
-
   /* data classes */
   final case class Photo(string: String)
-
-  final case class User(login: Name, password: String, photos: List[Photo])
-
+  final case class User(login: String, password: String, photos: List[Photo])
   final case class Session(id: Int)
 
   /* server data */
-  val users: mutable.Map[Name, User] = mutable.Map[Name, User]()
-  val sessions: mutable.Map[Name, Session] = mutable.Map[Name, Session]()
+  val users: mutable.Map[String, User] = mutable.Map[String, User]()
+  val sessions: mutable.Map[String, Session] = mutable.Map[String, Session]()
 
   /* requests */
   final case class SignRequest(login: String, password: String)
 
   /* responses */
-  final case class LoginResponse(success: Boolean, login: Name = "", sessionKey: Session = Session(-1))
-
+  final case class LoginResponse(success: Boolean, login: String = "", sessionKey: Session = Session(-1))
   final case class RegisterResponse(success: Boolean)
 
   /* contracts*/
-  def register(login: Name, password: String): RegisterResponse = {
+  def register(login: String, password: String): RegisterResponse = {
     if (users.contains(login)) {
       return RegisterResponse(false)
     }
@@ -35,7 +30,7 @@ object DomainModel {
     RegisterResponse(true)
   }
 
-  def login(login: Name, password: String): LoginResponse = {
+  def login(login: String, password: String): LoginResponse = {
     if (!users.contains(login)) {
       return LoginResponse(success = false)
     }
