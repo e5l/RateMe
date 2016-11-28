@@ -18,6 +18,7 @@ import scala.io.StdIn
 object Config {
   val PORT = 8080
   val URL = "0.0.0.0"
+  val DB_PATH = "/tmp/server.db"
 }
 
 object Server extends App {
@@ -29,7 +30,7 @@ object Server extends App {
   implicit val registerResponseFormat: RootJsonFormat[RegisterResponse] = jsonFormat1(RegisterResponse)
   implicit val loginResponseFormat: RootJsonFormat[LoginResponse] = jsonFormat3(LoginResponse)
 
-  val domain = new DomainModel()
+  val domain = DomainModel.readOrCreate(Config.DB_PATH)
 
   println(s"Starting server on ${Config.PORT}")
 
@@ -66,4 +67,6 @@ object Server extends App {
   bindingFuture
     .flatMap(_.unbind())
     .onComplete(_ => system.terminate())
+
+  DomainModel.save(domain, Config.DB_PATH)
 }

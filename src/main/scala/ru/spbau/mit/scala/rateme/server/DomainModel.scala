@@ -1,6 +1,11 @@
 package ru.spbau.mit.scala.rateme.server
 
+import java.io._
+
 import scala.collection.mutable
+import scala.io.Source
+import scala.pickling.Defaults._
+import scala.pickling.json._
 
 /* requests */
 final case class SignRequest(login: String, password: String)
@@ -10,15 +15,12 @@ final case class LoginResponse(success: Boolean, login: String = "", sessionKey:
 final case class RegisterResponse(success: Boolean)
 
 /* data */
-final case class Photo(string: String)
-final case class User(login: String, password: String, photos: List[Photo])
-final case class Session(id: Int)
+final case class User(login: String, password: String, photos: List[String]) extends Serializable
 
-class DomainModel {
-
+case class DomainModel() extends Serializable {
   /* server data */
   val users: mutable.Map[String, User] = mutable.Map[String, User]()
-  val sessions: mutable.Map[String, Session] = mutable.Map[String, Session]()
+  val sessions: mutable.Map[String, Int] = mutable.Map[String, Int]()
 
   /* contracts*/
   def register(request: SignRequest): RegisterResponse = {
@@ -38,11 +40,26 @@ class DomainModel {
     }
 
     val id = sessions.size
-    sessions(login) = Session(id)
+    sessions(login) = id
 
     LoginResponse(success = true, login, id)
   }
 }
 
 object DomainModel {
+
+  def readOrCreate(dbPath: String): DomainModel = {
+    if (!new File(dbPath).exists()) {
+      return new DomainModel()
+    }
+
+    val stream = new ObjectInputStream(new FileInputStream(dbPath))
+    stream.readObject().asInstanceOf[DomainModel]
+  }
+
+  def save(model: DomainModel, dbPath: String) = {
+    val stream = new ObjectOutputStream(new FileOutputStream(dbPath))
+    stream.writeObject(model)
+    stream.close()
+  }
 }
