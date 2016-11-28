@@ -8,6 +8,8 @@ import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.Done
+import spray.json.DefaultJsonProtocol._
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
 import scala.io.StdIn
 
@@ -21,6 +23,8 @@ object Server extends App {
   implicit val system = ActorSystem("rateme-actor-system")
   implicit val materalizer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
+
+  implicit val signFormat = jsonFormat2(DomainModel.SignRequest)
 
   println(s"Starting server on ${Config.PORT}")
 
@@ -38,9 +42,15 @@ object Server extends App {
     } ~
       post {
         path("register") {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+          entity(as[DomainModel.SignRequest]) { request =>
+            println(s"Register request: $request")
+            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+          }
         } ~
           path("login") {
+            //            entity(as[DomainModel.SignRequest]) { request =>
+            //              println(s"Register request: $request")
+            //            }
             complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
           }
       }
