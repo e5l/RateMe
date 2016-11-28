@@ -6,7 +6,7 @@ import scala.collection.mutable
 final case class SignRequest(login: String, password: String)
 
 /* responses */
-final case class LoginResponse(success: Boolean, login: String = "", sessionKey: Session = Session(-1))
+final case class LoginResponse(success: Boolean, login: String = "", sessionKey: Int = -1)
 final case class RegisterResponse(success: Boolean)
 
 /* data */
@@ -40,6 +40,9 @@ class DomainModel {
     val id = sessions.size
     sessions(login) = Session(id)
 
-    LoginResponse(success = true, login, Session(id))
+    LoginResponse(success = true, login, id)
   }
+}
+
+object DomainModel {
 }
