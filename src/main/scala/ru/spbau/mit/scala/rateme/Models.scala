@@ -31,4 +31,6 @@ def login(login: Name, password: String): LoginResponse = {
 
   val id = sessions.size
   sessions(login) = Session(id)
+
+  LoginResponse(true, login, Session(id))
 }
