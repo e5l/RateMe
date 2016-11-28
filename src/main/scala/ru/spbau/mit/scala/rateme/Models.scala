@@ -2,17 +2,17 @@
 type Name = String
 
 /* data classes */
-case class Photo(string: String)
-case class User(login: Name, password: String, photos: List[Photo])
-case class Session(id: Int)
+final case class Photo(string: String)
+final case class User(login: Name, password: String, photos: List[Photo])
+final case class Session(id: Int)
 
 /* server data */
 val users = Map[Name, User]()
 val sessions = Map[Name, Session]()
 
-/* reposnses */
-case class LoginResponse(success: Boolean, login: Name = "", sessionKey: Session = Session(-1))
-case class RegisterResponse(success: Boolean)
+/* responses */
+final case class LoginResponse(success: Boolean, login: Name = "", sessionKey: Session = Session(-1))
+final case class RegisterResponse(success: Boolean)
 
 /* contracts*/
 def register(login: Name, password: String): RegisterResponse = {
