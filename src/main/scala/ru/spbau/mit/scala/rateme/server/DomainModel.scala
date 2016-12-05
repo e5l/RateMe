@@ -4,8 +4,6 @@ import java.io._
 
 import scala.collection.mutable
 import scala.io.Source
-import scala.pickling.Defaults._
-import scala.pickling.json._
 
 /* requests */
 final case class SignRequest(login: String, password: String)

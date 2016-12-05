@@ -4,22 +4,13 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
-import akka.http.scaladsl.model.StatusCode
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import akka.Done
 import spray.json.DefaultJsonProtocol._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import spray.json.{DefaultJsonProtocol, RootJsonFormat}
+import spray.json.RootJsonFormat
 
 import scala.io.StdIn
-
-
-object Config {
-  val PORT = 8080
-  val URL = "0.0.0.0"
-  val DB_PATH = "/tmp/server.db"
-}
 
 object Server extends App {
   implicit val system = ActorSystem("rateme-actor-system")
@@ -49,13 +40,11 @@ object Server extends App {
       post {
         path("register") {
           entity(as[SignRequest]) { request =>
-            println(s"Register request: $request")
             complete(domain.register(request))
           }
         } ~
           path("login") {
             entity(as[SignRequest]) { request =>
-              println(s"Login request: $request")
               complete(domain.login(request))
             }
           }
