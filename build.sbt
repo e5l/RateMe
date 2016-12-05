@@ -13,5 +13,6 @@ libraryDependencies ++= Seq(
   "com.lihaoyi" %%% "scalatags" % "0.6.1",
   "com.lihaoyi" %%% "upickle" % "0.4.3",
   "org.iq80.leveldb" % "leveldb" % "0.7",
-  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8"
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
+  "com.owlike" % "genson-scala_2.11" % "1.4"
 )

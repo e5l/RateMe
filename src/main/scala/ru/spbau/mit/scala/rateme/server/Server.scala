@@ -10,6 +10,8 @@ import akka.http.scaladsl.server.Route
 import spray.json.DefaultJsonProtocol._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.util.Timeout
+import ru.spbau.mit.scala.rateme.client.{LoginPage, RegisterPage}
+
 import scala.concurrent.duration._
 import ru.spbau.mit.scala.rateme.server.actors.SessionsActor.{LoginFailed, LoginRequest, LoginResponse, LoginSuccess}
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{RegisterFail, RegisterResponse, RegisterSuccess}
@@ -40,13 +42,13 @@ object Server extends App {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
       } ~
         path("register") {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, RegisterPage.skeleton.render))
         } ~
         path("login") {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
-        }
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, LoginPage.skeleton.render))
+        } ~ getFromDirectory("./target/scala-2.11/")
     } ~
-      post {
+    post {
         path("register") {
           entity(as[RequestSign]) { request =>
             complete((users ? UsersActor.Register(request.login, request.password)).mapTo[RegisterResponse].map {

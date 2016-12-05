@@ -3,10 +3,11 @@ package ru.spbau.mit.scala.rateme.client
 import scalatags.Text.all._
 
 object RegisterPage {
-  val boot = ""
+  val boot = "ru.spbau.mit.scala.rateme.client.RegisterApplication().main()"
   val skeleton =
     html(
       head(
+        script(src:="/rateme-fastopt.js"),
         link(
           rel:="stylesheet",
           href:="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -25,7 +26,7 @@ object RegisterPage {
               id:="login-text",
               `type`:="text",
               `name`:="Login",
-              `value`:="Сын собаки"
+              `value`:=""
             )
           ),
 
