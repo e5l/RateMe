@@ -8,6 +8,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import spray.json.DefaultJsonProtocol._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import ru.spbau.mit.scala.rateme.server.models.{LoginResponse, RegisterResponse, SignRequest}
 import spray.json.RootJsonFormat
 
 import scala.io.StdIn
@@ -20,8 +21,6 @@ object Server extends App {
   implicit val signFormat: RootJsonFormat[SignRequest] = jsonFormat2(SignRequest)
   implicit val registerResponseFormat: RootJsonFormat[RegisterResponse] = jsonFormat1(RegisterResponse)
   implicit val loginResponseFormat: RootJsonFormat[LoginResponse] = jsonFormat3(LoginResponse)
-
-  val domain = DomainModel.readOrCreate(Config.DB_PATH)
 
   println(s"Starting server on ${Config.PORT}")
 
@@ -40,12 +39,14 @@ object Server extends App {
       post {
         path("register") {
           entity(as[SignRequest]) { request =>
-            complete(domain.register(request))
+            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+//            complete(domain.register(request))
           }
         } ~
           path("login") {
             entity(as[SignRequest]) { request =>
-              complete(domain.login(request))
+              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+//              complete(domain.login(request))
             }
           }
       }
@@ -56,6 +57,4 @@ object Server extends App {
   bindingFuture
     .flatMap(_.unbind())
     .onComplete(_ => system.terminate())
-
-  DomainModel.save(domain, Config.DB_PATH)
 }

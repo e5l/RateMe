@@ -5,7 +5,6 @@ import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.html
 import org.scalajs.dom.html.Input
-import ru.spbau.mit.scala.rateme.server.SignRequest
 
 
 object RateApplication extends JSApp {
