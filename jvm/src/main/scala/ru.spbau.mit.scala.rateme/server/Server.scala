@@ -10,6 +10,7 @@ import akka.http.scaladsl.server.Route
 import spray.json.DefaultJsonProtocol._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.util.Timeout
+import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage}
 import ru.spbau.mit.scala.rateme.server.actors.PhotosActor.{SelectPhoto, SetPhoto}
 
 import scala.concurrent.duration._
@@ -33,17 +34,17 @@ object Server extends App {
   implicit val loginResponseFormat: RootJsonFormat[ResponseLogin] = jsonFormat3(ResponseLogin)
   implicit val uploadPhotoRequest: RootJsonFormat[RequestUploadPhoto] = jsonFormat2(RequestUploadPhoto)
 
-  implicit val photosRequest: RootJsonFormat[RequestPhotos] = jsonFormat1(RequestPhotos)
+//  implicit val photosRequest: RootJsonFormat[RequestPhotos] = jsonFormat1(RequestPhotos)
   implicit val photosResponse: RootJsonFormat[ResponsePhotos] = jsonFormat4(ResponsePhotos)
 
-  implicit val Request: RootJsonFormat[RequestPhotos] = jsonFormat1(RequestPhotos)
-  implicit val photosResponse: RootJsonFormat[ResponsePhotos] = jsonFormat4(ResponsePhotos)
+//  implicit val Request: RootJsonFormat[RequestPhotos] = jsonFormat1(RequestPhotos)
+//  implicit val photosResponse: RootJsonFormat[ResponsePhotos] = jsonFormat4(ResponsePhotos)
 
 
   val users = system.actorOf(UsersActor.props)
   val sessions = system.actorOf(SessionsActor.props(users))
   val photos = system.actorOf(PhotosActor.props)
-  val likes = system.actorOf(LikesActor.props)
+//  val likes = system.actorOf(LikesActor.props)
 
   val dummy = HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>")
   println(s"Starting server on ${Config.PORT}")
@@ -85,7 +86,7 @@ object Server extends App {
 //            }
 //          } ~
           path("Like") {
-            entity(as[RequestLike]) { request => likes ! request }
+//            entity(as[RequestLike]) { request => likes ! request }
             complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
           } ~
           path("GetMyLikes") {

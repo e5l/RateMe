@@ -2,7 +2,7 @@ import sbt.Keys.libraryDependencies
 
 name := "RateMe"
 version := "1.0"
-scalaVersion := "2.11.8"
+scalaVersion in ThisBuild := "2.11.8"
 
 lazy val root = project.in(file(".")).
   aggregate(appJS, appJVM).
@@ -11,13 +11,12 @@ lazy val root = project.in(file(".")).
     publishLocal := {}
   )
 
-val app = crossProject.in(file("app")).
+val app = crossProject.in(file(".")).
   settings(
     libraryDependencies ++= Seq(
       "com.lihaoyi" %%% "scalatags" % "0.6.1",
       "com.lihaoyi" %%% "upickle" % "0.4.3"
-    ),
-    scalaVersion := "2.11.8"
+    )
   ).
   jsSettings(
     libraryDependencies ++= Seq(
@@ -37,6 +36,4 @@ val app = crossProject.in(file("app")).
   )
 
 lazy val appJS = app.js
-lazy val appJVM = app.jvm.settings(
-  (resources in Compile) += (fastOptJS in (appJS, Compile)).value.data
-)
+lazy val appJVM = app.jvm
