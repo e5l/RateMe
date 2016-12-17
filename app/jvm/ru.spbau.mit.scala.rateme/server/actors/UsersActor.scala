@@ -12,11 +12,11 @@ object UsersActor {
   case class Register(username: String, password: String)
   case class Auth(username: String, password: String)
 
-  sealed abstract class RegisterResponse
+  sealed trait RegisterResponse
   case class RegisterSuccess() extends RegisterResponse
   case class RegisterFail() extends RegisterResponse
 
-  sealed abstract class AuthResponse
+  sealed trait AuthResponse
   case class AuthSuccess(user: User) extends AuthResponse
   case class AuthFail() extends AuthResponse
 
@@ -53,5 +53,4 @@ class UsersActor extends PersistentActor {
   } else {
     AuthFail()
   }
-
 }

@@ -11,11 +11,12 @@ import spray.json.DefaultJsonProtocol._
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.util.Timeout
 import ru.spbau.mit.scala.rateme.client.{LoginPage, RegisterPage}
+import ru.spbau.mit.scala.rateme.server.actors.PhotosActor.{SelectPhoto, SetPhoto}
 
 import scala.concurrent.duration._
-import ru.spbau.mit.scala.rateme.server.actors.SessionsActor.{LoginFailed, LoginRequest, LoginResponse, LoginSuccess}
+import ru.spbau.mit.scala.rateme.server.actors.SessionsActor._
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{RegisterFail, RegisterResponse, RegisterSuccess}
-import ru.spbau.mit.scala.rateme.server.actors.{SessionsActor, UsersActor}
+import ru.spbau.mit.scala.rateme.server.actors.{PhotosActor, SessionsActor, UsersActor}
 import ru.spbau.mit.scala.rateme.server.models._
 import spray.json.RootJsonFormat
 
@@ -30,12 +31,22 @@ object Server extends App {
   implicit val signFormat: RootJsonFormat[RequestSign] = jsonFormat2(RequestSign)
   implicit val registerResponseFormat: RootJsonFormat[ResponseRegister] = jsonFormat1(ResponseRegister)
   implicit val loginResponseFormat: RootJsonFormat[ResponseLogin] = jsonFormat3(ResponseLogin)
+  implicit val uploadPhotoRequest: RootJsonFormat[RequestUploadPhoto] = jsonFormat2(RequestUploadPhoto)
+
+  implicit val photosRequest: RootJsonFormat[RequestPhotos] = jsonFormat1(RequestPhotos)
+  implicit val photosResponse: RootJsonFormat[ResponsePhotos] = jsonFormat4(ResponsePhotos)
+
+  implicit val Request: RootJsonFormat[RequestPhotos] = jsonFormat1(RequestPhotos)
+  implicit val photosResponse: RootJsonFormat[ResponsePhotos] = jsonFormat4(ResponsePhotos)
+
 
   val users = system.actorOf(UsersActor.props)
   val sessions = system.actorOf(SessionsActor.props(users))
+  val photos = system.actorOf(PhotosActor.props)
+  val likes = system.actorOf(LikesActor.props)
 
+  val dummy = HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>")
   println(s"Starting server on ${Config.PORT}")
-
   val route: Route =
     get {
       path("") {
@@ -48,7 +59,7 @@ object Server extends App {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, LoginPage.skeleton.render))
         } ~ getFromDirectory("./target/scala-2.11/")
     } ~
-    post {
+      post {
         path("register") {
           entity(as[RequestSign]) { request =>
             complete((users ? UsersActor.Register(request.login, request.password)).mapTo[RegisterResponse].map {
@@ -64,11 +75,36 @@ object Server extends App {
                 case _: LoginFailed => ResponseLogin(success = false)
               })
             }
+          } ~
+          path("IWantToLike") {
+            entity(as[RequestPhotos]) { request =>
+              complete((sessions ? SessionRequest(request.key)).mapTo[SessionResponse].map {
+                case SessionExists(user) => (photos ? SelectPhoto(user)).mapTo[ResponsePhotos]
+                case _: SessionNotExists => throw new SessionNotFoundException();
+              })
+            }
+          } ~
+          path("Like") {
+            entity(as[RequestLike]) { request => likes ! request }
+            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+          } ~
+          path("GetMyLikes") {
+            complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+          } ~
+          path("UploadPhoto") {
+            entity(as[RequestUploadPhoto]) { request =>
+              (sessions ? SessionRequest(request.key)).mapTo[SessionResponse].map {
+                case SessionExists(user) => photos ! SetPhoto(user, request.photoUrl)
+                case _: SessionNotExists =>
+              }
+              complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+            }
           }
       }
 
   val bindingFuture = Http().bindAndHandle(route, Config.URL, Config.PORT)
   StdIn.readLine()
+
 
   bindingFuture
     .flatMap(_.unbind())
