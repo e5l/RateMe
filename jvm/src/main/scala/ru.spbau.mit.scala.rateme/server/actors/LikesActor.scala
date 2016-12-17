@@ -4,7 +4,6 @@ import akka.actor.Props
 import akka.persistence.PersistentActor
 
 object LikesActor {
-
   def props(): Props = Props()
 }
 
