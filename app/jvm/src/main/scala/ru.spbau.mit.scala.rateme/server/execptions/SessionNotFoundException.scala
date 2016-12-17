@@ -1,4 +1,4 @@
-package ru.spbau.mit.scala.rateme.server
+package ru.spbau.mit.scala.rateme.server.execptions
 
 /**
   * Created by leonid on 12/13/16.

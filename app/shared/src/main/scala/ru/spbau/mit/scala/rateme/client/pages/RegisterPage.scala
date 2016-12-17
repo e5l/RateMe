@@ -1,4 +1,4 @@
-package ru.spbau.mit.scala.rateme.client
+package ru.spbau.mit.scala.rateme.client.pages
 
 import scalatags.Text.all._
 

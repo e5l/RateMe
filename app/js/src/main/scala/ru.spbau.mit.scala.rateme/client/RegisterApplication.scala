@@ -1,12 +1,11 @@
 package ru.spbau.mit.scala.rateme.client
 
-import scala.scalajs.js.{JSApp, JSON}
 import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.html
 import org.scalajs.dom.html.Input
-import ru.spbau.mit.scala.rateme.server.models.RequestSign
-import com.owlike.genson.defaultGenson._
+
+import scala.scalajs.js.{JSApp, JSON}
 
 
 object RegisterApplication extends JSApp {
