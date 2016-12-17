@@ -18,7 +18,7 @@ import ru.spbau.mit.scala.rateme.server.actors.SessionsActor._
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{RegisterFail, RegisterResponse, RegisterSuccess}
 import ru.spbau.mit.scala.rateme.server.actors.{LikesActor, PhotosActor, SessionsActor, UsersActor}
 import ru.spbau.mit.scala.rateme.server.execptions.SessionNotFoundException
-import ru.spbau.mit.scala.rateme.server.models._
+import ru.spbau.mit.scala.rateme.client.pages.models._
 import spray.json.RootJsonFormat
 
 import scala.io.StdIn

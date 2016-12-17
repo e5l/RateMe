@@ -4,6 +4,7 @@ import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.html
 import org.scalajs.dom.html.Input
+import ru.spbau.mit.scala.rateme.client.pages.models.RequestSign
 
 import scala.scalajs.js.{JSApp, JSON}
 
@@ -24,10 +25,9 @@ object RegisterApplication extends JSApp {
     registerButton.onclick = {
       (e: dom.MouseEvent) =>
         val registerData = RequestSign(loginField.value, passwordField.value)
-        val request = toJson(registerData)
         Ajax.post(
           "/register",
-          data = JSON.stringify(request)
+          data = ""
         )
     }
   }

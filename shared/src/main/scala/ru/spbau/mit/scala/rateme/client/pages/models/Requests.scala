@@ -1,4 +1,4 @@
-package ru.spbau.mit.scala.rateme.server.models
+package ru.spbau.mit.scala.rateme.client.pages.models
 
 final case class RequestSign(login: String, password: String)
 

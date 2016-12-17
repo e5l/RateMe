@@ -4,7 +4,7 @@ import akka.actor.Props
 import akka.event.Logging
 import akka.persistence.{PersistentActor, RecoveryCompleted}
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor._
-import ru.spbau.mit.scala.rateme.server.models.User
+import ru.spbau.mit.scala.rateme.client.pages.models.User
 
 import scala.collection.mutable
 

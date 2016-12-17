@@ -2,7 +2,7 @@ package ru.spbau.mit.scala.rateme.server.actors
 
 import akka.actor.Props
 import akka.persistence.PersistentActor
-import ru.spbau.mit.scala.rateme.server.models.User
+import ru.spbau.mit.scala.rateme.client.pages.models.User
 
 object PhotosActor {
   def props: Props = Props(new PhotosActor())
