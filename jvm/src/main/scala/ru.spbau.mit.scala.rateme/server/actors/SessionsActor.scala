@@ -6,19 +6,15 @@ import akka.event.Logging
 import akka.util.Timeout
 import ru.spbau.mit.scala.rateme.server.actors.SessionsActor._
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{Auth, AuthFail, AuthResponse, AuthSuccess}
-import ru.spbau.mit.scala.rateme.client.pages.models.User
+import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, ResponseLogin, User}
 
 import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 import scala.concurrent.duration._
 
 object SessionsActor {
-  case class LoginRequest(username: String, password: String)
+  case class LoginRequest(request: RequestSign)
   case class SessionRequest(key: Int)
-
-  sealed abstract class LoginResponse
-  case class LoginSuccess(key: Int) extends LoginResponse
-  case class LoginFailed() extends LoginResponse
 
   sealed abstract class SessionResponse
   case class SessionExists(user: User) extends SessionResponse
@@ -34,12 +30,10 @@ class SessionsActor(val users: ActorRef) extends Actor {
   val log = Logging(context.system, this)
   val sessions: mutable.Map[Int, User] = mutable.Map[Int, User]()
 
-  def login(username: String, password: String): Future[LoginResponse] =
-    (users ? Auth(username, password)).mapTo[AuthResponse].map[LoginResponse]({
-      case AuthSuccess(user) =>
-        LoginSuccess(generateKey(user))
-      case _: AuthFail =>
-        LoginFailed()
+  def login(request: RequestSign): Future[ResponseLogin] =
+    (users ? Auth(request)).mapTo[User].map[ResponseLogin]({ x =>
+      if (x == null) ResponseLogin(success = false)
+      else ResponseLogin(success = true, x.login, generateKey(x))
     })
 
   private def generateKey(user: User): Int = {
@@ -57,7 +51,7 @@ class SessionsActor(val users: ActorRef) extends Actor {
   }
 
   override def receive: Receive = {
-    case LoginRequest(username, password) => pipe(login(username, password)) to sender()
+    case LoginRequest(request) => pipe(login(request)) to sender()
     case SessionRequest(key) => sender() ! session(key)
     case x => log.error(s"Unknown request: $x")
   }

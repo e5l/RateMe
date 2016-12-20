@@ -8,8 +8,11 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, ResponseRegister}
+import akka.pattern._
+import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, ResponseLogin, ResponseRegister}
 import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage}
+import ru.spbau.mit.scala.rateme.server.actors.SessionsActor.LoginRequest
+import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{Auth, Register, RegisterResponse}
 
 import scala.concurrent.duration._
 import ru.spbau.mit.scala.rateme.server.actors.{LikesActor, PhotosActor, SessionsActor, UsersActor}
@@ -24,8 +27,8 @@ object Server extends App with JsonFormatter {
 
   val users = system.actorOf(UsersActor.props)
   val sessions = system.actorOf(SessionsActor.props(users))
-//  val photos = system.actorOf(PhotosActor.props)
-//  val likes = system.actorOf(LikesActor.props)
+  //  val photos = system.actorOf(PhotosActor.props)
+  //  val likes = system.actorOf(LikesActor.props)
 
   val dummy = HttpEntity(ContentTypes.`application/json`, "<h1>Say hello to akka-http</h1>")
   println(s"Starting server on ${Config.PORT}")
@@ -44,13 +47,15 @@ object Server extends App with JsonFormatter {
       post {
         path("register") {
           entity(as[RequestSign]) { request =>
-            println(request)
-            complete(ResponseRegister(true))
-//            complete(dummy)
+            val response = (users ? Register(request)).mapTo[ResponseRegister]
+            complete(response)
           }
         } ~
           path("login") {
-            complete(dummy)
+            entity(as[RequestSign]) { request =>
+              val response = (sessions ? LoginRequest(request)).mapTo[ResponseLogin]
+              complete(response)
+            }
           } ~
           path("IWantToLike") {
             complete(dummy)
