@@ -8,7 +8,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import ru.spbau.mit.scala.rateme.client.pages.models.RequestSign
+import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, ResponseRegister}
 import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage}
 
 import scala.concurrent.duration._
@@ -45,7 +45,8 @@ object Server extends App with JsonFormatter {
         path("register") {
           entity(as[RequestSign]) { request =>
             println(request)
-            complete(dummy)
+            complete(ResponseRegister(true))
+//            complete(dummy)
           }
         } ~
           path("login") {
