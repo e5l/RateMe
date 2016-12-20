@@ -30,7 +30,7 @@ object Server extends App {
   val route: Route =
     get {
       path("") {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
+        complete(dummy)
       } ~
         path("register") {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, RegisterPage.skeleton.render))
@@ -40,7 +40,7 @@ object Server extends App {
         } ~ getFromDirectory("./target/scala-2.11/")
     } ~
       post {
-        path("register") {
+        path("register") { request =>
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
         } ~
           path("login") {
