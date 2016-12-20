@@ -14,17 +14,20 @@ lazy val root = project.in(file(".")).
 val app = crossProject.in(file(".")).
   settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "scalatags" % "0.6.1",
-      "com.lihaoyi" %%% "upickle" % "0.4.3"
+      "com.lihaoyi" %%% "scalatags" % "0.6.1"
     )
   ).
   jsSettings(
     libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "upickle" % "0.4.3",
+      "be.doeraene" %%% "scalajs-jquery" % "0.9.1",
+      "org.webjars" % "jquery" % "2.1.3",
       "org.scala-js" %%% "scalajs-dom" % "0.9.1"
     )
   ).
   jvmSettings(
     libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-http-spray-json-experimental" % "2.4.4",
       "com.typesafe.akka" %% "akka-http" % "10.0.0",
       "com.typesafe.akka" %% "akka-persistence" % "2.4.14",
       "org.iq80.leveldb" % "leveldb" % "0.7",

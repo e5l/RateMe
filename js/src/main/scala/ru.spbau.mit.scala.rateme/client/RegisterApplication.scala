@@ -5,13 +5,15 @@ import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.html
 import org.scalajs.dom.html.Input
 import ru.spbau.mit.scala.rateme.client.pages.models.RequestSign
+import org.scalajs.jquery._
 
+import scala.scalajs.js
 import scala.scalajs.js.{JSApp, JSON}
-
+import upickle.default._
 
 object RegisterApplication extends JSApp {
 
-  override def main(): Unit = {
+  def main(): Unit = {
     val loginField = dom.document.getElementById("login-text")
       .asInstanceOf[html.Input]
     val passwordField = dom.document.getElementById("password-text")
@@ -24,11 +26,13 @@ object RegisterApplication extends JSApp {
   def setupSubmitBtn(registerButton: Input, loginField: Input, passwordField : Input): Unit = {
     registerButton.onclick = {
       (e: dom.MouseEvent) =>
-        val registerData = RequestSign(loginField.value, passwordField.value)
-        Ajax.post(
-          "/register",
-          data = ""
-        )
+        val registerData = write(RequestSign(loginField.value, passwordField.value))
+
+        jQuery.ajax("/register", js.Dictionary(
+          "method" -> "POST", //{val str: js.Any = "POST"; str}
+          "contentType" -> "application/json",
+          "data" -> registerData
+        ).asInstanceOf[JQueryAjaxSettings])
     }
   }
 }
