@@ -11,7 +11,7 @@ import akka.pattern._
 import ru.spbau.mit.scala.rateme.client.pages.models._
 import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage}
 import ru.spbau.mit.scala.rateme.server.actors.SessionsActor.{LoginRequest, SessionRequest}
-import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{Like, Likes, Register, UploadPhoto}
+import ru.spbau.mit.scala.rateme.server.actors.UsersActor._
 
 import scala.concurrent.duration._
 import ru.spbau.mit.scala.rateme.server.actors.{SessionsActor, UsersActor}
@@ -64,7 +64,8 @@ object Server extends App with JsonFormatter {
           } ~
           path("IWantToLike") {
             entity(as[RequestPhotos]) { request =>
-              complete(dummy)
+              val response = checkSession(request.key).map(user => (users ? GetPhotos(user, request)).mapTo[ResponsePhotos])
+              complete(response)
             }
           } ~
           path("Like") {
@@ -72,7 +73,7 @@ object Server extends App with JsonFormatter {
               val response = checkSession(request.key).map(user => {
                 if (user == null) fail
                 else {
-                  users ? Like(request, user)
+                  users ! Like(request, user)
                   success
                 }
               })
@@ -82,7 +83,7 @@ object Server extends App with JsonFormatter {
           } ~
           path("GetMyLikes") {
             entity(as[RequestListLikes]) { request =>
-              val response = checkSession(request.key).map(user => (users ? Likes(user)).mapTo[ResponseListLikes])
+              val response = checkSession(request.key).map(user => ResponseListLikes(user.likes.toArray))
               complete(response)
             }
           } ~
@@ -91,7 +92,7 @@ object Server extends App with JsonFormatter {
               val response = checkSession(request.key).map(user => {
                 if (user == null) fail
                 else {
-                  users ? UploadPhoto(request, user)
+                  users ! UploadPhoto(request, user)
                   success
                 }
               })

@@ -1,3 +1,5 @@
 package ru.spbau.mit.scala.rateme.client.pages.models
 
-final case class User(login: String, password: String, photos: List[String])
+import scala.collection.mutable
+
+final case class User(login: String, password: String, var photo: String, likes: mutable.MutableList[String])
