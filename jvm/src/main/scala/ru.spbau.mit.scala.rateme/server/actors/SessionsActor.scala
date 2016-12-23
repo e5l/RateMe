@@ -16,10 +16,6 @@ object SessionsActor {
   case class LoginRequest(request: RequestSign)
   case class SessionRequest(key: Int)
 
-  sealed abstract class SessionResponse
-  case class SessionExists(user: User) extends SessionResponse
-  case class SessionNotExists() extends SessionResponse
-
   def props(userProps: ActorRef): Props = Props(new SessionsActor(userProps))
 }
 
@@ -42,17 +38,9 @@ class SessionsActor(val users: ActorRef) extends Actor {
     key
   }
 
-  private def session(key: Int): SessionResponse = {
-    if (sessions.contains(key)) {
-      SessionExists(sessions(key))
-    } else {
-      SessionNotExists()
-    }
-  }
-
   override def receive: Receive = {
     case LoginRequest(request) => pipe(login(request)) to sender()
-    case SessionRequest(key) => sender() ! session(key)
+    case SessionRequest(key) => sender() ! (if (!sessions.contains(key)) null else sessions(key))
     case x => log.error(s"Unknown request: $x")
   }
 }

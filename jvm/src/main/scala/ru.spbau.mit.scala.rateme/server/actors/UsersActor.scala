@@ -4,15 +4,17 @@ import akka.actor.Props
 import akka.event.Logging
 import akka.persistence.{PersistentActor, RecoveryCompleted}
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor._
-import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, ResponseRegister, User}
+import ru.spbau.mit.scala.rateme.client.pages.models._
 
 import scala.collection.mutable
 
 object UsersActor {
 
   case class Register(request: RequestSign)
-
   case class Auth(request: RequestSign)
+  case class Like(request: RequestLike, user: User)
+  case class UploadPhoto(request: RequestUploadPhoto, user: User)
+  case class Likes(user: User)
 
   def props: Props = Props(new UsersActor())
 }
