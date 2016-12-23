@@ -3,7 +3,6 @@ package ru.spbau.mit.scala.rateme.server
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
@@ -12,7 +11,7 @@ import akka.pattern._
 import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, ResponseLogin, ResponseRegister}
 import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage}
 import ru.spbau.mit.scala.rateme.server.actors.SessionsActor.LoginRequest
-import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{Auth, Register, RegisterResponse}
+import ru.spbau.mit.scala.rateme.server.actors.UsersActor.Register
 
 import scala.concurrent.duration._
 import ru.spbau.mit.scala.rateme.server.actors.{LikesActor, PhotosActor, SessionsActor, UsersActor}

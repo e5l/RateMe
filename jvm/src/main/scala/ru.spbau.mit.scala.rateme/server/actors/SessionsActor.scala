@@ -5,8 +5,8 @@ import akka.pattern._
 import akka.event.Logging
 import akka.util.Timeout
 import ru.spbau.mit.scala.rateme.server.actors.SessionsActor._
-import ru.spbau.mit.scala.rateme.server.actors.UsersActor.{Auth, AuthFail, AuthResponse, AuthSuccess}
 import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, ResponseLogin, User}
+import ru.spbau.mit.scala.rateme.server.actors.UsersActor.Auth
 
 import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
