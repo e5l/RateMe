@@ -13,28 +13,27 @@ import scala.scalajs.js
 import scala.scalajs.js.{JSApp, JSON}
 import upickle.default._
 
-object RegisterApplication extends JSApp {
+
+object LoginApplication extends JSApp {
 
   def main(): Unit = {
     val loginField = dom.document.getElementById("login-text")
       .asInstanceOf[html.Input]
     val passwordField = dom.document.getElementById("password-text")
       .asInstanceOf[html.Input]
-    val registerButton = dom.document.getElementById("register-button")
+    val registerButton = dom.document.getElementById("login-button")
       .asInstanceOf[html.Input]
-    setupSubmitBtn(registerButton, loginField, passwordField)
+    setupLoginBtn(registerButton, loginField, passwordField)
   }
 
-  def setupSubmitBtn(registerButton: Input, loginField: Input, passwordField : Input): Unit = {
+  def setupLoginBtn(registerButton: Input, loginField: Input, passwordField : Input): Unit = {
     registerButton.onclick = {
       (e: dom.MouseEvent) =>
         val registerData = write(RequestSign(loginField.value, passwordField.value))
-        Ajax.post("/register", registerData, headers = Map("Content-Type" -> "application/json")).foreach { response =>
+        Ajax.post("/login", registerData, headers = Map("Content-Type" -> "application/json")).foreach { response =>
           val result = read[ResponseRegister](response.responseText)
           println(result)
         }
     }
   }
-
-  def registerSuccess(data: js.Any, textStatus: String, jqXHR: JQueryXHR): js.Dynamic = null
 }

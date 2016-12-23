@@ -1,10 +1,9 @@
 package ru.spbau.mit.scala.rateme.client.pages
 
-import scalatags.Text.TypedTag
 import scalatags.Text.all._
 
 object MainPage {
-  val skeleton: TypedTag[String] =
+  val skeleton =
     html(
       head(
         script(src:="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"),
@@ -18,8 +17,18 @@ object MainPage {
           href:="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
         )
       ),
+
       body(
-        h1("This is main page")
+        h1("RateMe Application"),
+
+        div(
+          a(href:="http://localhost:8080/register") (
+            p("Registration Page")
+          ),
+          a(href:="http://localhost:8080/login") (
+            p("Login Page")
+          )
+          )
       )
     )
 }

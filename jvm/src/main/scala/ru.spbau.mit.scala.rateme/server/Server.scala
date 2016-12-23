@@ -9,7 +9,7 @@ import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import akka.pattern._
 import ru.spbau.mit.scala.rateme.client.pages.models._
-import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage}
+import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage, MainPage}
 import ru.spbau.mit.scala.rateme.server.actors.SessionsActor.{LoginRequest, SessionRequest}
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor._
 
@@ -39,9 +39,9 @@ object Server extends App with JsonFormatter {
   println(s"Starting server on ${Config.PORT}")
   val route: Route =
     get {
-      path("") {
-        complete(dummy)
-      } ~
+        path("") {
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, MainPage.skeleton.render))
+        } ~
         path("register") {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, RegisterPage.skeleton.render))
         } ~
