@@ -79,6 +79,6 @@ class UsersActor extends PersistentActor {
       result += data(index)
     }
 
-    ResponsePhotos(result.head.login, result.head.photo, result(1).login, result(1).photo)
+    ResponsePhotos(result.head.login, result(1).login, result.head.photo, result(1).photo)
   }
 }

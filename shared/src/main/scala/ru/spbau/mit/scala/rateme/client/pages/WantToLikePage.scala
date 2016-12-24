@@ -20,7 +20,7 @@ object WantToLikePage {
         h2("Like page"),
 
         div(`class` := "content")(
-          img(id := "left", src := "https://i.stack.imgur.com/uguXk.jpg?s=328&g=1")
+          img(id := "left", width := "400", height := "400", src := "https://i.stack.imgur.com/uguXk.jpg?s=328&g=1")
         ),
 
         div(
@@ -35,7 +35,7 @@ object WantToLikePage {
         ),
 
         div(`class` := "content")(
-          img(id := "right", src := "https://i.stack.imgur.com/uguXk.jpg?s=328&g=1")
+          img(id := "right", width := "400", height := "400", src := "https://i.stack.imgur.com/uguXk.jpg?s=328&g=1")
         ),
 
         div(
