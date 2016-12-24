@@ -89,7 +89,7 @@ object Server extends App with JsonFormatter {
           } ~
           path("GetMyLikes") {
             entity(as[RequestListLikes]) { request =>
-              val response = checkSession(request.key).map(user => ResponseListLikes(user.likes.toArray))
+              val response = checkSession(request.key).map(user => ResponseListLikes(user.photo, user.likes.toArray))
               complete(response)
             }
           } ~

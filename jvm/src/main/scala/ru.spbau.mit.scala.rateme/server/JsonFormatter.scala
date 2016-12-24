@@ -15,7 +15,7 @@ trait JsonFormatter extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val responseRegisterFormat = jsonFormat1(ResponseRegister)
   implicit val responseLoginFormat = jsonFormat3(ResponseLogin)
   implicit val responsePhotosFormat = jsonFormat4(ResponsePhotos)
-  implicit val responseListLikesFormat = jsonFormat1(ResponseListLikes)
+  implicit val responseListLikesFormat = jsonFormat2(ResponseListLikes)
 }
 
 

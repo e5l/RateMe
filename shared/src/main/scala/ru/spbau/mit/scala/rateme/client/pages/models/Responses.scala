@@ -6,5 +6,5 @@ final case class ResponseLogin(success: Boolean, login: String = "", sessionKey:
 
 /* Play API */
 final case class ResponsePhotos(firstName: String, secondName: String, firstPhoto: String, secondPhoto: String)
-final case class ResponseListLikes(users: Array[String])
+final case class ResponseListLikes(photo: String, users: Array[String])
 
