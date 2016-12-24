@@ -4,11 +4,13 @@ import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.html
 import org.scalajs.dom.html._
-import ru.spbau.mit.scala.rateme.client.pages.models.{RequestSign, RequestUploadPhoto, ResponseRegister}
+import ru.spbau.mit.scala.rateme.client.pages.models.{RequestUploadPhoto}
 import upickle.default._
 
-import scala.scalajs.js.JSApp
-
+import scala.concurrent._
+import ExecutionContext.Implicits.global
+import scala.scalajs.js.{JSApp}
+import upickle.default._
 
 object LoadApplication extends JSApp {
 
@@ -26,6 +28,7 @@ object LoadApplication extends JSApp {
         val id = Integer.parseInt(dom.document.cookie)
         println("RequestUpload: ", id, photoField.value)
         val photoData = write(RequestUploadPhoto(id, photoField.value))
+        dom.document.getElementById("photo-src").asInstanceOf[Image].src = photoField.value
         Ajax.post("/UploadPhoto", photoData, headers = Map("Content-Type" -> "application/json"))
     }
   }
