@@ -31,8 +31,8 @@ object LoginApplication extends JSApp {
         val registerData = write(RequestSign(loginField.value, passwordField.value))
         Ajax.post("/login", registerData, headers = Map("Content-Type" -> "application/json")).foreach { response =>
           val result = read[ResponseLogin](response.responseText)
-          dom.document.cookie = result.sessionKey.toString
-          dom.document.location.href = "http://0.0.0.0:8080/"
+          print(result.sessionKey.toString)
+          dom.document.cookie = "username=" + result.sessionKey.toString
         }
     }
   }

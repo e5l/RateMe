@@ -23,8 +23,8 @@ object WantToLikeApplication extends JSApp {
     val rightButton = dom.document.getElementById("right-button")
       .asInstanceOf[html.Input]
     setupLikeBtn(leftButton, rightButton)
-    val id = Integer.parseInt(dom.document.cookie)
-    val data = write(RequestPhotos(id))
+    val username = dom.document.cookie.substring(dom.document.cookie.indexOf("=") + 1)
+    val data = write(RequestPhotos(Integer.parseInt(username)))
     Ajax.post("/IWantToLike", data, headers = Map("Content-Type" -> "application/json")).foreach { response =>
       photos = read[ResponsePhotos](response.responseText)
       dom.document.getElementById("left").asInstanceOf[Image].src = photos.firstPhoto
@@ -34,7 +34,6 @@ object WantToLikeApplication extends JSApp {
 
   def setupLikeBtn(leftButton: Input, rightButton: Input): Unit = {
     val id = Integer.parseInt(dom.document.cookie)
-
     leftButton.onclick = {
       (e: dom.MouseEvent) =>
         val likeData = write(RequestLike(id, photos.firstName))

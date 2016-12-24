@@ -25,7 +25,8 @@ object LoadApplication extends JSApp {
   def setupLoadBtn(loadButton: Input, photoField: Input): Unit = {
     loadButton.onclick = {
       (e: dom.MouseEvent) =>
-        val id = Integer.parseInt(dom.document.cookie)
+        val username = dom.document.cookie.substring(dom.document.cookie.indexOf("=") + 1)
+        val id = Integer.parseInt(username)
         println("RequestUpload: ", id, photoField.value)
         val photoData = write(RequestUploadPhoto(id, photoField.value))
         dom.document.getElementById("photo-src").asInstanceOf[Image].src = photoField.value

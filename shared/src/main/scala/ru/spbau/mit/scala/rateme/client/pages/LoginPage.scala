@@ -40,6 +40,12 @@ object LoginPage {
             `type` := "submit",
             `class` := "btn btn-primary",
             `value` := "Login"
+          ),
+
+          div(
+            a(href:="http://localhost:8080") (
+              p("Main Page")
+            )
           )
         ),
 
