@@ -10,11 +10,7 @@ object MainPage {
         script(src:="/app-fastopt.js"),
         link(
           rel:="stylesheet",
-          href:="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        ),
-        link(
-          rel:="stylesheet",
-          href:="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          href:="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css"
         )
       ),
 
@@ -27,6 +23,9 @@ object MainPage {
           ),
           a(href:="http://localhost:8080/login") (
             p("Login Page")
+          ),
+          a(href:="http://localhost:8080/load") (
+            p("Load Page")
           )
           )
       )

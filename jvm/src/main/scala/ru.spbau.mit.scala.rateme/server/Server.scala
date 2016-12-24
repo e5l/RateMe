@@ -9,7 +9,7 @@ import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import akka.pattern._
 import ru.spbau.mit.scala.rateme.client.pages.models._
-import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage, MainPage}
+import ru.spbau.mit.scala.rateme.client.pages.{LoginPage, RegisterPage, MainPage, LoadPage}
 import ru.spbau.mit.scala.rateme.server.actors.SessionsActor.{LoginRequest, SessionRequest}
 import ru.spbau.mit.scala.rateme.server.actors.UsersActor._
 
@@ -44,6 +44,9 @@ object Server extends App with JsonFormatter {
         } ~
         path("register") {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, RegisterPage.skeleton.render))
+        } ~
+        path("load") {
+          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, LoadPage.skeleton.render))
         } ~
         path("login") {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, LoginPage.skeleton.render))
@@ -96,7 +99,6 @@ object Server extends App with JsonFormatter {
                   success
                 }
               })
-
               complete(response)
             }
           }

@@ -11,11 +11,7 @@ object RegisterPage {
         script(src:="/app-fastopt.js"),
         link(
           rel:="stylesheet",
-          href:="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        ),
-        link(
-          rel:="stylesheet",
-          href:="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          href:="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css"
         )
       ),
 
@@ -39,10 +35,13 @@ object RegisterPage {
           ),
 
           div(
-            input(
-              id:="register-button",
-              `type`:="submit",
-              `value`:="Register"
+            a(href:="http://localhost:8080")(
+              input(
+                id:="register-button",
+                `class`:="btn btn-primary",
+                `type`:="submit",
+                `value`:="Register"
+              )
             )
           ),
 
