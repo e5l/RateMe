@@ -36,7 +36,7 @@ class UsersActor extends PersistentActor {
     case Auth(request) => sender ! auth(request.login, request.password)
     case Like(request, user) => persist(Like(request, user))(_ => like(request, user))
     case UploadPhoto(request, user) => persist(UploadPhoto(request, user))(_ => uploadPhoto(request, user))
-    case GetPhotos(user, request) => getRandomPhotos(user, request)
+    case GetPhotos(user, request) => sender ! getRandomPhotos(user, request)
     case x => log.warning(s"Unknown request: $x")
   }
 
@@ -64,19 +64,21 @@ class UsersActor extends PersistentActor {
 
   private def uploadPhoto(request: RequestUploadPhoto, user: User) =
     if (!users.contains(user.login)) null
-    else users(user.login).photo = request.photoUrl
+    else {
+      users(user.login).photo = request.photoUrl
+      users(user.login).likes.clear()
+    }
 
   private def getRandomPhotos(user: User, request: RequestPhotos): ResponsePhotos = {
-    val result = mutable.HashSet[User]()
+    val result = mutable.MutableList[User]()
     val data = mutable.MutableList[User]()
     data ++= users.values
 
-    while (result.size < 2 && data.nonEmpty) {
+    while (result.size < 2) {
       val index = random.nextInt() % data.size
-      result.add(data(index))
+      result += data(index)
     }
 
-    val response = result.toList
-    ResponsePhotos(response.head.login, response.head.photo, response(1).login, response(1).photo)
+    ResponsePhotos(result.head.login, result.head.photo, result(1).login, result(1).photo)
   }
 }
