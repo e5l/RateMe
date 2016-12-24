@@ -39,9 +39,9 @@ object Server extends App with JsonFormatter {
   println(s"Starting server on ${Config.PORT}")
   val route: Route =
     get {
-        path("") {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, MainPage.skeleton.render))
-        } ~
+      path("") {
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, MainPage.skeleton.render))
+      } ~
         path("register") {
           complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, RegisterPage.skeleton.render))
         } ~

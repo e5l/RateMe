@@ -15,8 +15,6 @@ import upickle.default._
 
 object LoginApplication extends JSApp {
 
-  var sessionNumber = 0
-
   def main(): Unit = {
     val loginField = dom.document.getElementById("login-text")
       .asInstanceOf[html.Input]
@@ -27,14 +25,14 @@ object LoginApplication extends JSApp {
     setupLoginBtn(loginButton, loginField, passwordField)
   }
 
-  def setupLoginBtn(registerButton: Input, loginField: Input, passwordField : Input): Unit = {
+  def setupLoginBtn(registerButton: Input, loginField: Input, passwordField: Input): Unit = {
     registerButton.onclick = {
       (e: dom.MouseEvent) =>
         val registerData = write(RequestSign(loginField.value, passwordField.value))
         Ajax.post("/login", registerData, headers = Map("Content-Type" -> "application/json")).foreach { response =>
           val result = read[ResponseLogin](response.responseText)
-          sessionNumber = result.sessionKey
-          println(result.login)
+          dom.document.cookie = result.sessionKey.toString
+          dom.document.location.href = "http://0.0.0.0:8080/"
         }
     }
   }

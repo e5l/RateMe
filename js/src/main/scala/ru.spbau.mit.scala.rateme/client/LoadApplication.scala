@@ -23,8 +23,9 @@ object LoadApplication extends JSApp {
   def setupLoadBtn(loadButton: Input, photoField: Input): Unit = {
     loadButton.onclick = {
       (e: dom.MouseEvent) =>
-        // TODO: get right session id
-        val photoData = write(RequestUploadPhoto(1, photoField.value))
+        val id = Integer.parseInt(dom.document.cookie)
+        println("RequestUpload: ", id, photoField.value)
+        val photoData = write(RequestUploadPhoto(id, photoField.value))
         Ajax.post("/UploadPhoto", photoData, headers = Map("Content-Type" -> "application/json"))
     }
   }

@@ -7,11 +7,11 @@ object LoginPage {
   val skeleton =
     html(
       head(
-        script(src:="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"),
-        script(src:="/app-fastopt.js"),
+        script(src := "https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"),
+        script(src := "/app-fastopt.js"),
         link(
-          rel:="stylesheet",
-          href:="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css"
+          rel := "stylesheet",
+          href := "https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css"
         )
       ),
 
@@ -20,28 +20,26 @@ object LoginPage {
 
         div(
           input(
-            id:="login-text",
-            `type`:="text",
-            `name`:="Login",
-            `value`:=""
+            id := "login-text",
+            `type` := "text",
+            `name` := "Login",
+            `value` := ""
           )
         ),
 
         div(
           input(
-            id:="password-text",
-            `type`:="password"
+            id := "password-text",
+            `type` := "password"
           )
         ),
 
         div(
-          a(href:="http://localhost:8080")(
-            input(
-              id:="login-button",
-              `type`:="submit",
-              `class`:="btn btn-primary",
-              `value`:="Login"
-            )
+          input(
+            id := "login-button",
+            `type` := "submit",
+            `class` := "btn btn-primary",
+            `value` := "Login"
           )
         ),
 

@@ -15,32 +15,35 @@ import scala.scalajs.js.JSApp
 
 object WantToLikeApplication extends JSApp {
 
+  var photos: ResponsePhotos = null
+
   def main(): Unit = {
     val leftButton = dom.document.getElementById("left-button")
       .asInstanceOf[html.Input]
     val rightButton = dom.document.getElementById("right-button")
       .asInstanceOf[html.Input]
     setupLikeBtn(leftButton, rightButton)
-    // TODO: add session id
-    val data = write(RequestPhotos(1))
+    val id = Integer.parseInt(dom.document.cookie)
+    val data = write(RequestPhotos(id))
     Ajax.post("/IWantToLike", data, headers = Map("Content-Type" -> "application/json")).foreach { response =>
-      val result = read[ResponsePhotos](response.responseText)
-      print(result)
+      photos = read[ResponsePhotos](response.responseText)
+      dom.document.getElementById("left").asInstanceOf[Image].src = photos.firstPhoto
+      dom.document.getElementById("right").asInstanceOf[Image].src = photos.secondPhoto
     }
   }
 
   def setupLikeBtn(leftButton: Input, rightButton: Input): Unit = {
+    val id = Integer.parseInt(dom.document.cookie)
+
     leftButton.onclick = {
       (e: dom.MouseEvent) =>
-        // TODO: valid input
-        val likeData = write(RequestLike(1, ""))
+        val likeData = write(RequestLike(id, photos.firstName))
         Ajax.post("/Like", likeData, headers = Map("Content-Type" -> "application/json"))
     }
 
     rightButton.onclick = {
       (e: dom.MouseEvent) =>
-        // TODO: valid input
-        val likeData = write(RequestLike(1, ""))
+        val likeData = write(RequestLike(id, photos.secondName))
         Ajax.post("/Like", likeData, headers = Map("Content-Type" -> "application/json"))
     }
   }
