@@ -40,6 +40,14 @@ object LoadPage {
             ),
 
             div(
+              input(
+                id := "likes",
+                `value`:= "Likes = 0",
+                `class`:="btn btn-primary"
+              )
+            ),
+
+            div(
               a(href:="http://localhost:8080") (
                 p("Main Page")
               )

@@ -33,16 +33,16 @@ object WantToLikeApplication extends JSApp {
   }
 
   def setupLikeBtn(leftButton: Input, rightButton: Input): Unit = {
-    val id = Integer.parseInt(dom.document.cookie)
+    val id = dom.document.cookie.substring(dom.document.cookie.indexOf("=") + 1)
     leftButton.onclick = {
       (e: dom.MouseEvent) =>
-        val likeData = write(RequestLike(id, photos.firstName))
+        val likeData = write(RequestLike(Integer.parseInt(id), photos.firstName))
         Ajax.post("/Like", likeData, headers = Map("Content-Type" -> "application/json"))
     }
 
     rightButton.onclick = {
       (e: dom.MouseEvent) =>
-        val likeData = write(RequestLike(id, photos.secondName))
+        val likeData = write(RequestLike(Integer.parseInt(id), photos.secondName))
         Ajax.post("/Like", likeData, headers = Map("Content-Type" -> "application/json"))
     }
   }
