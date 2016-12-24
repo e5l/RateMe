@@ -9,7 +9,7 @@ import org.scalajs.jquery._
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
-import scala.scalajs.js.{JSApp, JSON}
+import scala.scalajs.js.{JSApp}
 import upickle.default._
 
 

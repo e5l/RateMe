@@ -27,13 +27,21 @@ object LoadPage {
         ),
 
         div(
-          a(href:="http://localhost:8080") (
+          div(
+            input(
+              id:="load-button",
+              `class`:="btn btn-primary",
+              `type`:="submit",
+              `value`:="Load Photo Link"
+            ),
+
+            div(`class` := "content")(
+              img(id := "photo-src", width := "400", height := "400", src := "http://i2.kym-cdn.com/photos/images/newsfeed/000/459/893/136.png")
+            ),
+
             div(
-              input(
-                id:="load-button",
-                `class`:="btn btn-primary",
-                `type`:="submit",
-                `value`:="Load Photo Link"
+              a(href:="http://localhost:8080") (
+                p("Main Page")
               )
             )
           )
