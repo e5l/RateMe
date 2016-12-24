@@ -26,6 +26,9 @@ object MainPage {
           ),
           a(href:="http://localhost:8080/load") (
             p("Load Page")
+          ),
+          a(href:="http://localhost:8080/like") (
+            p("Like Someone")
           )
           )
       )

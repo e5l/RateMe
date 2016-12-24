@@ -22,10 +22,10 @@ object RegisterApplication extends JSApp {
       .asInstanceOf[html.Input]
     val registerButton = dom.document.getElementById("register-button")
       .asInstanceOf[html.Input]
-    setupSubmitBtn(registerButton, loginField, passwordField)
+    setupRegisterBtn(registerButton, loginField, passwordField)
   }
 
-  def setupSubmitBtn(registerButton: Input, loginField: Input, passwordField : Input): Unit = {
+  def setupRegisterBtn(registerButton: Input, loginField: Input, passwordField : Input): Unit = {
     registerButton.onclick = {
       (e: dom.MouseEvent) =>
         val registerData = write(RequestSign(loginField.value, passwordField.value))
